@@ -1,0 +1,28 @@
+卷 DATA 的文件夹 PATH 列表
+卷序列号为 78ED-77B9
+D:.
+│  App.vue
+│  list.text
+│  main.js
+│  
+├─api
+│      channel.js
+│      
+├─assets
+│      logo.png
+│      
+├─components
+├─router
+│      index.js
+│      
+├─store
+│      index.js
+│      
+├─styles
+├─utils
+│      request.js
+│      
+└─views
+    └─login
+            login.vue
+            

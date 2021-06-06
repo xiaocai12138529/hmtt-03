@@ -13,3 +13,11 @@ export const login = (user) => {
     }
   })
 }
+
+// 获取用户信息
+export const getPorfile = () => {
+  return request({
+    url: '/v1_0/user/profile',
+    method: 'GET'
+  })
+}

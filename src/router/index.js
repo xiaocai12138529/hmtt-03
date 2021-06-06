@@ -6,11 +6,11 @@ import login from '@/views/login/login.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'Home',
-  //   component: Home
-  // },
+  {
+    path: '/',
+    name: 'layout',
+    component: () => import(/* webpackChunkName: "about" */ '../views/layout/layout.vue')
+  },
   {
     path: '/login',
     name: 'login',

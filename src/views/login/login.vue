@@ -40,21 +40,23 @@
 </template>
 
 <script>
-// import { login } from '@/api/user.js'
 import { mapActions } from 'vuex'
 export default {
   name: 'login',
   data () {
     return {
+      // 账户密码
       user: {
         mobile: '13911111111', // 测试账号可以登录
         code: '246810'
       },
+      // 正则 我没用
       pattern: /^1\d{10}$/
     }
   },
   methods: {
     ...mapActions(['userLogin']),
+    ...mapActions('user', ['getProfile']),
     onSubmit () {
       console.log('验证成功')
       this.doLogin()
@@ -65,20 +67,25 @@ export default {
 
     // 登录功能
     async doLogin () {
+      // 等待遮罩层
       this.$toast({
         duration: 0, // 持续展示 toast,永远不会关闭
         overlay: true, // 整体添加一个遮罩
         message: '加载中...'
       })
       try {
-        // console.log(this.user)
-        // const res = await login(this.user)
-        // console.log(res)
-        this.userLogin(this.user)
+        // 登录验证
+        await this.userLogin(this.user)
+        // 获取用户信息
+        await this.getProfile()
+        // 登录成功跳转
+        this.$router.push('/')
+        // 登录成功效果
         this.$toast.success('成功')
       } catch (err) {
+        // 登录失败效果
         this.$toast.fail('失败')
-        console.log('????', err.message)
+        console.log('登录失败', err.message)
       }
     }
   }

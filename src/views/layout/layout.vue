@@ -2,7 +2,7 @@
   <div class="container">
     <!-- 顶部导航 -->
     <div>
-      <van-nav-bar title="标题" left-text="返回" left-arrow>
+      <van-nav-bar fixed title="标题" left-text="返回" left-arrow>
         <template #left>
           <div class="logo"><img src="" alt="" /></div>
         </template>
@@ -19,7 +19,7 @@
 
     <!-- 底部的tabbar -->
     <div>
-      <van-tabbar v-model="active" route>
+      <van-tabbar route>
         <van-tabbar-item icon="home-o" to="/">主页</van-tabbar-item>
         <van-tabbar-item icon="question-o" to="/question">问答</van-tabbar-item>
         <van-tabbar-item icon="video-o" to="/video">视频</van-tabbar-item>

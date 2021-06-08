@@ -24,8 +24,8 @@
                 v-for="(imgUrl, ind) in article.cover.images"
                 :key="ind"
               >
-                <!-- 图片 -->
-                <van-image :src="imgUrl" />
+                <!-- 图片  lazy-load 图片懒加载-->
+                <van-image lazy-load :src="imgUrl" />
               </van-grid-item>
             </van-grid>
             <!-- 文字区域 -->

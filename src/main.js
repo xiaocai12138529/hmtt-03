@@ -12,7 +12,11 @@ import 'amfe-flexible'
 // 导入全局css样式
 import '@/styles/index.less'
 
+// 注册过滤器组件
+import formateDate from '@/utils/formateDate.js'
+
 Vue.use(Vant)
+Vue.use(formateDate)
 
 Vue.config.productionTip = false
 

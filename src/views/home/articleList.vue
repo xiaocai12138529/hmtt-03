@@ -8,7 +8,35 @@
         finished-text="没有更多了"
         @load="onLoad"
       >
-        <van-cell v-for="item in list" :key="item.art_id" :title="item.title" />
+        <van-cell
+          v-for="article in list"
+          :key="article.art_id"
+          :title="article.title"
+        >
+          <!-- 插槽 -->
+          <div slot="label">
+            <!-- 宫格 -->
+            <van-grid
+              v-if="article.cover.images"
+              :column-num="article.cover.images.lenght"
+            >
+              <van-grid-item
+                v-for="(imgUrl, ind) in article.cover.images"
+                :key="ind"
+              >
+                <!-- 图片 -->
+                <van-image :src="imgUrl" />
+              </van-grid-item>
+            </van-grid>
+            <!-- 文字区域 -->
+            <div class="meta">
+              <span>{{ article.aut_name }}</span>
+              <span>{{ article.comm_count }}评论</span>
+              <span>{{ article.pubdate }}</span>
+            </div>
+          </div>
+          <!-- </div> -->
+        </van-cell>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -36,7 +64,7 @@ export default {
       const arr = res.data.data.results
       this.tiemstamp = res.data.data.pre_timestamp
       this.list.push(...arr)
-
+      console.log(this.list)
       this.loading = false
       if (arr.length === 0 || res.data.data.pre_timestamp == null) {
         // 说明取不到数据了
@@ -63,5 +91,10 @@ export default {
 <style scoped lang='less'>
 /deep/ .scroll-wrapper {
   padding-right: 20px;
+}
+.meta {
+  span {
+    margin-right: 10px;
+  }
 }
 </style>

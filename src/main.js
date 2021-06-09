@@ -15,9 +15,6 @@ import '@/styles/index.less'
 // 注册过滤器组件
 import formateDate from '@/utils/formateDate.js'
 
-import { saveToken } from '@/utils/storage.js'
-saveToken({ token: '1111' })
-
 Vue.use(Vant)
 Vue.use(formateDate)
 

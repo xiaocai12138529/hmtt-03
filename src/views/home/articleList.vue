@@ -34,7 +34,7 @@
               <span>{{ article.comm_count }}评论</span>
               <span>{{ article.pubdate | relativeTime }}</span>
               <span
-                @click="moreArticle"
+                @click="moreArticle(article.art_id)"
                 class="close"
                 v-if="$store.state.tokenInfor.token"
               >
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { getArticles } from '@/api/article.js'
+import { getArticles, disLike } from '@/api/article.js'
 import MoreAction from './moreAction.vue'
 export default {
   name: 'ArticleList',
@@ -70,7 +70,8 @@ export default {
       finished: false, // 是否已经完成
       refreshing: false,
       tiemstamp: Date.now(),
-      isShowMroeArticle: false
+      isShowMroeArticle: false,
+      articleId: null
     }
   },
   methods: {
@@ -100,13 +101,29 @@ export default {
       this.loading = true
       this.onLoad()
     },
-    moreArticle () {
+    moreArticle (id) {
       this.isShowMroeArticle = true
+      this.articleId = id
     },
     async hUnLike () {
       // console.log(123)
       // 接下载要做的三件事情
       this.isShowMroeArticle = false
+      try {
+        const res = await disLike(this.articleId)
+        console.log(res)
+        this.$toast.fail('删除成功')
+        // 删除本地文章
+        this.delArticle(this.articleId)
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('操作失败')
+      }
+    },
+    delArticle (id) {
+      const i = this.list.findIndex(item => item.art_id === id)
+      console.log(i)
+      this.list.splice(this.list.findIndex(item => item.art_id === id), 1)
     }
   }
 

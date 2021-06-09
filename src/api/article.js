@@ -11,3 +11,18 @@ export const getArticles = (channel_id, timestamp) => {
     }
   })
 }
+
+/**
+ *
+ * @param {对文章不喜欢} target 文章id
+ * @returns
+ */
+export const disLike = target => {
+  return request({
+    url: '/v1_0/article/dislikes',
+    method: 'POST',
+    data: {
+      target
+    }
+  })
+}

@@ -47,8 +47,8 @@
         </van-cell>
         <!-- 弹层 -->
         <van-popup v-model="isShowMroeArticle" :style="{ width: '80%' }"
-          >内容</van-popup
-        >
+          ><MoreAction @un-like="hUnLike"></MoreAction
+        ></van-popup>
       </van-list>
     </van-pull-refresh>
   </div>
@@ -56,9 +56,13 @@
 
 <script>
 import { getArticles } from '@/api/article.js'
+import MoreAction from './moreAction.vue'
 export default {
   name: 'ArticleList',
   props: ['channel'],
+  components: {
+    MoreAction
+  },
   data () {
     return {
       list: [], // 保存取到的列表数据
@@ -98,6 +102,11 @@ export default {
     },
     moreArticle () {
       this.isShowMroeArticle = true
+    },
+    async hUnLike () {
+      // console.log(123)
+      // 接下载要做的三件事情
+      this.isShowMroeArticle = false
     }
   }
 

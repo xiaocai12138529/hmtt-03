@@ -32,11 +32,23 @@
             <div class="meta">
               <span>{{ article.aut_name }}</span>
               <span>{{ article.comm_count }}评论</span>
-              <span>{{ article.pubdate }}</span>
+              <span>{{ article.pubdate | relativeTime }}</span>
+              <span
+                @click="moreArticle"
+                class="close"
+                v-if="$store.state.tokenInfor.token"
+              >
+                <van-icon name="cross"></van-icon>
+              </span>
+              <!-- 叉叉 -->
             </div>
           </div>
           <!-- </div> -->
         </van-cell>
+        <!-- 弹层 -->
+        <van-popup v-model="isShowMroeArticle" :style="{ width: '80%' }"
+          >内容</van-popup
+        >
       </van-list>
     </van-pull-refresh>
   </div>
@@ -53,7 +65,8 @@ export default {
       loading: false, // 是否正在加载
       finished: false, // 是否已经完成
       refreshing: false,
-      tiemstamp: Date.now()
+      tiemstamp: Date.now(),
+      isShowMroeArticle: false
     }
   },
   methods: {
@@ -82,6 +95,9 @@ export default {
       // 将 loading 设置为 true，表示处于加载状态
       this.loading = true
       this.onLoad()
+    },
+    moreArticle () {
+      this.isShowMroeArticle = true
     }
   }
 
@@ -95,6 +111,13 @@ export default {
 .meta {
   span {
     margin-right: 10px;
+  }
+  display: flex;
+  // 让它在最右边
+  .close {
+    // 它的父级容器是flex的，给当前元素设置左外边距为auto，会让这个元素在父级容器
+    // 的最右边
+    margin-left: auto;
   }
 }
 </style>

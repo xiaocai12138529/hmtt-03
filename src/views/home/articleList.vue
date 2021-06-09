@@ -33,6 +33,7 @@
               <span>{{ article.aut_name }}</span>
               <span>{{ article.comm_count }}评论</span>
               <span>{{ article.pubdate | relativeTime }}</span>
+              <!-- 叉叉 -->
               <span
                 @click="moreArticle(article.art_id)"
                 class="close"
@@ -40,14 +41,18 @@
               >
                 <van-icon name="cross"></van-icon>
               </span>
-              <!-- 叉叉 -->
             </div>
           </div>
           <!-- </div> -->
         </van-cell>
         <!-- 弹层 -->
         <van-popup v-model="isShowMroeArticle" :style="{ width: '80%' }"
-          ><MoreAction @un-like="hUnLike"></MoreAction
+          ><MoreAction
+            isReport="ture"
+            @un-like="hUnLike"
+            @report="hReport"
+            ref="refRoreAction"
+          ></MoreAction
         ></van-popup>
       </van-list>
     </van-pull-refresh>
@@ -55,7 +60,7 @@
 </template>
 
 <script>
-import { getArticles, disLike } from '@/api/article.js'
+import { getArticles, disLike, reports } from '@/api/article.js'
 import MoreAction from './moreAction.vue'
 export default {
   name: 'ArticleList',
@@ -92,18 +97,26 @@ export default {
       // this.$toast.position('top')
       this.$toast.setDefaultOptions({ duration: 100 })
     },
-    onRefresh () {
-      // 清空列表数据
-      this.finished = false
+    async onRefresh () {
+      // Date.now(): 请求新的推荐数据传当前的时间戳
+      const res = await getArticles(this.channel.id, Date.now())
+      // 获取的数据
+      const arr = res.data.data.results // 它是一个数组
+      // 1. 追加数据到list的头部
+      //    对数组进行展开
+      this.list = []
+      this.list.unshift(...arr)
 
-      // 重新加载数据
-      // 将 loading 设置为 true，表示处于加载状态
-      this.loading = true
-      this.onLoad()
+      // 2. 把loading设置为false
+      this.refreshing = false
+
+      this.$toast.success('成功加载数据')
     },
+    // 点击叉叉事件
     moreArticle (id) {
       this.isShowMroeArticle = true
       this.articleId = id
+      if (this.$refs.refRoreAction) { this.$refs.refRoreAction.isReport = true }
     },
     async hUnLike () {
       // console.log(123)
@@ -120,10 +133,26 @@ export default {
         this.$toast.fail('操作失败')
       }
     },
+    // 删除本地文章
     delArticle (id) {
       const i = this.list.findIndex(item => item.art_id === id)
       console.log(i)
       this.list.splice(this.list.findIndex(item => item.art_id === id), 1)
+    },
+    // 举报文章
+    async hReport (val) {
+      console.log(val)
+      try {
+        console.log(this.articleId, val.value)
+        const res = await reports(this.articleId, val.value)
+        console.log(res)
+        this.isShowMroeArticle = false
+        this.$toast.success('举报成功')
+        this.delArticle()
+      } catch (err) {
+        this.$toast.fail('举报失败')
+        console.log(err)
+      }
     }
   }
 

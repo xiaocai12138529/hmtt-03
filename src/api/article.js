@@ -26,3 +26,13 @@ export const disLike = target => {
     }
   })
 }
+export const reports = (target, type) => {
+  return request({
+    url: '/v1_0/article/reports',
+    method: 'POST',
+    data: {
+      target,
+      type
+    }
+  })
+}

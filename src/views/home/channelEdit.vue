@@ -44,7 +44,7 @@
 import { getChannels, addChannel, delChannel } from '@/api/channel'
 export default {
   name: 'ChannelEdit',
-  props: ['channels', 'active'],
+  props: ['channels', 'active', 'isShowChannelEdit'],
   data () {
     return {
       isShow: false,
@@ -58,7 +58,11 @@ export default {
       return this.allChannels.filter((item) => !this.channels.some(index => index.id == item.id))
     }
   },
-
+  watch: {
+    isShowChannelEdit: function () {
+      this.isShow = false
+    }
+  },
   created () {
     this.getChannels()
   },

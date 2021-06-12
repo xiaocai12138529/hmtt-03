@@ -23,6 +23,7 @@
           @change-channel="hChangeChannel"
           @change-actice="hChangeActice"
           :active="active"
+          :isShowChannelEdit="isShowChannelEdit"
         ></channelEdit>
       </van-action-sheet>
     </van-tabs>

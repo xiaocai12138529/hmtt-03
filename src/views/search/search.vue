@@ -17,12 +17,17 @@
       <!-- <template slot="action">
         <div>搜索</div>
       </template> -->
-      <div slot="action">搜索</div>
+      <div slot="action" @click="hSearch">搜索</div>
     </van-search>
 
     <!-- 2. 搜索建议 -->
     <van-cell-group>
-      <van-cell icon="search" v-for="item in newList" :key="item">
+      <van-cell
+        icon="search"
+        v-for="(item, index) in newList"
+        :key="index"
+        @click="HClickSuggestion(index)"
+      >
         <div v-html="item"></div>
       </van-cell>
     </van-cell-group>
@@ -31,12 +36,8 @@
     <van-cell-group>
       <van-cell title="历史记录" />
 
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
-      </van-cell>
-
-      <van-cell title="单元格">
-        <van-icon name="close"></van-icon>
+      <van-cell :title="item" v-for="(item, index) in history" :key="index">
+        <van-icon @click="delHistory(index)" name="close"></van-icon>
       </van-cell>
     </van-cell-group>
   </div>
@@ -44,12 +45,17 @@
 
 <script>
 import { getSuggestion } from '@/api/search.js'
+import { saveHistory, getHistory } from '@/utils/historyStorage.js'
 export default {
   name: 'Search',
   data () {
     return {
-      keyword: '',
-      list: []
+      keyword: '', // 输入的搜索文字
+      list: [], // 搜索结果
+      history: [], // 历史结果
+      timer: null,
+      td: 0
+
     }
   },
   computed: {
@@ -59,9 +65,27 @@ export default {
       return this.list.map(item => item.replace(regex, `<i style="color:red">${this.keyword}</i>`))
     }
   },
+  created () {
+    this.history = getHistory()
+  },
   methods: {
     // 获取搜索信息
+    // 防抖()
+    // async hInput () {
+    //   clearTimeout(this.timer)
+    //   this.timer = await setTimeout(() => {
+    //     this.doAjax()
+    //   }, 1000)
+    // },
+    // 节流
     async hInput () {
+      const newDt = new Date()
+      if (newDt - this.td > 500) {
+        this.doAjax()
+        this.td = newDt
+      }
+    },
+    async doAjax () {
       if (this.keyword === '') {
         // 搜索框为空清空
         this.list = []
@@ -74,10 +98,29 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    // 添加历史记录方法
+    addHistory (keyword) {
+      const idx = this.history.findIndex(item => item === keyword)
+      idx !== -1 && this.history.splice(idx, 1)
+      this.history.unshift(keyword)
+      saveHistory(this.history)
+    },
+    // 情况一 点击搜索添加
+    hSearch () { if (this.keyword) this.addHistory(this.keyword) },
+    // 情况二 点击搜索结果添加
+    HClickSuggestion (inx) { this.addHistory(this.list[inx]) },
+    // 删除历史记录
+    delHistory (inx) {
+      this.history.splice(inx, 1)
+      saveHistory(this.history)
     }
   }
 }
 </script>
 
-<style>
-</style>
+<style lang="less" scoped>
+/deep/.van-nav-bar .van-icon {
+  color: #fff;
+}
+</style>>

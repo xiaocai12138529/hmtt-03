@@ -34,11 +34,7 @@ export default new Vuex.Store({
   },
   getters: {
     isLogin (state) {
-      if (state.tokenInfor.token) {
-        return true
-      } else {
-        return false
-      }
+      return Boolean(state.tokenInfor.token)
     }
   }
 })

@@ -1,5 +1,5 @@
 <template>
-  <div>问答</div>
+  <div>sousuo</div>
 </template>
 
 <script>

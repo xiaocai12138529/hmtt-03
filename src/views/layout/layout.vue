@@ -7,7 +7,12 @@
           <div class="logo"><img src="" alt="" /></div>
         </template>
         <template #right>
-          <van-button class="ssstyle" round icon="search" size="small"
+          <van-button
+            class="ssstyle"
+            round
+            icon="search"
+            size="small"
+            @click="$router.push('/search')"
             >搜索</van-button
           >
         </template>
@@ -23,13 +28,24 @@
         <van-tabbar-item icon="home-o" to="/">主页</van-tabbar-item>
         <van-tabbar-item icon="question-o" to="/question">问答</van-tabbar-item>
         <van-tabbar-item icon="video-o" to="/video">视频</van-tabbar-item>
-        <van-tabbar-item icon="setting-o" to="/setting">{{
-          $store.state.tokenInfor.token ? "我的" : "未登陆"
-        }}</van-tabbar-item>
+        <van-tabbar-item icon="setting-o" to="/setting"
+          >{{ $store.state.tokenInfor.token ? "我的" : "未登陆" }}
+          {{ isLogin ? "我的" : "未登录" }}
+        </van-tabbar-item>
       </van-tabbar>
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+export default {
+
+  computed: {
+    ...mapGetters(['isLogin'])
+  }
+}
+</script>
 
 <style lang="less" scoped>
 .logo {

@@ -31,5 +31,14 @@ export default new Vuex.Store({
   },
   modules: {
     user
+  },
+  getters: {
+    isLogin (state) {
+      if (state.tokenInfor.token) {
+        return true
+      } else {
+        return false
+      }
+    }
   }
 })

@@ -123,14 +123,18 @@ export default {
       // 接下载要做的三件事情
       this.isShowMroeArticle = false
       try {
+        console.log(this.articleId)
         const res = await disLike(this.articleId)
         console.log(res)
         this.$toast.fail('删除成功')
         // 删除本地文章
         this.delArticle(this.articleId)
       } catch (err) {
-        console.log(err)
+        console.log('123', err.name)
         this.$toast.fail('操作失败')
+        if (err.name === 'Error') {
+          alert('请重新登录')
+        }
       }
     },
     // 删除本地文章
@@ -145,13 +149,13 @@ export default {
       try {
         console.log(this.articleId, val.value)
         const res = await reports(this.articleId, val.value)
-        console.log(res)
+        console.log(res.status)
         this.isShowMroeArticle = false
         this.$toast.success('举报成功')
         this.delArticle()
       } catch (err) {
-        this.$toast.fail('举报失败')
-        console.log(err)
+        // console.log(err.name)
+        this.$toast.fail('举报失败asdasd ')
       }
     }
   }

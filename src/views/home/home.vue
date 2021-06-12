@@ -18,7 +18,12 @@
       <!-- https://vant-contrib.gitee.io/vant/#/zh-CN/action-sheet -->
       <van-action-sheet v-model="isShowChannelEdit" title="频道">
         <!-- 频道管理组件 -->
-        <channelEdit :channels="channels"></channelEdit>
+        <channelEdit
+          :channels="channels"
+          @change-channel="hChangeChannel"
+          @change-actice="hChangeActice"
+          :active="active"
+        ></channelEdit>
       </van-action-sheet>
     </van-tabs>
   </div>
@@ -43,6 +48,12 @@ export default {
     this.loadChannel()
   },
   methods: {
+    // 收到子组件中频道切换的事件
+    hChangeChannel (id) {
+      this.isShowChannelEdit = false
+      this.active = id
+    },
+    // 获取列表
     async loadChannel () {
       try {
         const res = await getUseChannels()
@@ -50,6 +61,10 @@ export default {
       } catch (err) {
         alert('获取列表失败')
       }
+    },
+    hChangeActice () {
+      console.log(123)
+      this.active--
     }
   }
 }

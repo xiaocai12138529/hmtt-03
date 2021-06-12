@@ -1,9 +1,6 @@
 // 以模块的方式导出 举报文章 时，后端接口约定的举报类型
 const reports = [
-  {
-    value: 0,
-    label: '其它问题'
-  },
+
   {
     value: 1,
     label: '标题夸张'

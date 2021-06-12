@@ -36,8 +36,13 @@
     <van-cell-group>
       <van-cell title="历史记录" />
 
-      <van-cell :title="item" v-for="(item, index) in history" :key="index">
-        <van-icon @click="delHistory(index)" name="close"></van-icon>
+      <van-cell
+        :title="item"
+        v-for="(item, index) in history"
+        :key="index"
+        @click="$router.push('/result?keyword=' + item)"
+      >
+        <van-icon @click.stop="delHistory(index)" name="close"></van-icon>
       </van-cell>
     </van-cell-group>
   </div>
@@ -46,6 +51,8 @@
 <script>
 import { getSuggestion } from '@/api/search.js'
 import { saveHistory, getHistory } from '@/utils/historyStorage.js'
+import escapeRegExp from '@/utils/escapeRegExp.js'
+
 export default {
   name: 'Search',
   data () {
@@ -61,7 +68,7 @@ export default {
   computed: {
     // 计算属性  高亮显示搜索内容
     newList () {
-      const regex = new RegExp(this.keyword, 'gi')
+      const regex = new RegExp(escapeRegExp(this.keyword), 'gi')
       return this.list.map(item => item.replace(regex, `<i style="color:red">${this.keyword}</i>`))
     }
   },
@@ -107,9 +114,18 @@ export default {
       saveHistory(this.history)
     },
     // 情况一 点击搜索添加
-    hSearch () { if (this.keyword) this.addHistory(this.keyword) },
+    hSearch () {
+      if (this.keyword) {
+        // 添加历史记录
+        this.addHistory(this.keyword)
+        this.$router.push('/result?keyword=' + this.keyword)
+      }
+    },
     // 情况二 点击搜索结果添加
-    HClickSuggestion (inx) { this.addHistory(this.list[inx]) },
+    HClickSuggestion (inx) {
+      this.$router.push('/result?keyword=' + this.list[inx])
+      this.addHistory(this.list[inx])
+    },
     // 删除历史记录
     delHistory (inx) {
       this.history.splice(inx, 1)

@@ -10,3 +10,12 @@ export const getSuggestion = (keyword) => {
     }
   })
 }
+export const getSearch = (keyword, page) => {
+  return request({
+    url: '/v1_0/search',
+    params: {
+      q: keyword,
+      page
+    }
+  })
+}

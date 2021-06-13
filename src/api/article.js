@@ -38,10 +38,41 @@ export const reports = (target, type) => {
 }
 
 // 获取文章详情
-// eslint-disable-next-line camelcase
 export const getArticlesDetails = (article) => {
   return request({
-    url: 'v1_0/articles/' + `${article}`
+    url: 'v1_0/articles/' + article
 
+  })
+}
+
+// 关注
+export const setConcern = (target) => {
+  return request({
+    method: 'POST',
+    url: '/v1_0/user/followings',
+    data: {
+      target
+    }
+  })
+}
+export const unConcern = (target) => {
+  return request({
+    url: '/v1_0/user/followings/' + target,
+    method: 'DELETE'
+
+  })
+}
+
+// 获取评论
+
+export const getComment = (source, offset) => {
+  return request({
+    url: '/v1_0/comments',
+    method: 'GET',
+    params: {
+      type: 'a',
+      source,
+      offset
+    }
   })
 }

@@ -36,7 +36,7 @@
               <span>{{ article.pubdate | relativeTime }}</span>
               <!-- 叉叉 -->
               <span
-                @click="moreArticle(article.art_id)"
+                @click.stop="moreArticle(article.art_id)"
                 class="close"
                 v-if="$store.state.tokenInfor.token"
               >

@@ -14,10 +14,11 @@
     <!-- /加载中 loading -->
 
     <!-- 文章详情 -->
-    <div class="detail">
+    <div class="detail" v-if="!is404">
       <!-- 标题 -->
       <h1 class="title">{{ article.title }}</h1>
       <div class="author">
+        <!-- 头像 -->
         <van-image
           round
           width="1rem"
@@ -32,12 +33,14 @@
           <p class="time">{{ article.pubdate | relativeTime }}</p>
         </div>
         <!-- 点击关注 -->
-        <van-button round size="small" type="info">+ 关注</van-button>
+        <van-button round size="small" type="info" @click="toggleConcern()">{{
+          article.is_followed ? "已关注" : " +关注"
+        }}</van-button>
       </div>
       <div class="content">
         <!-- 主体内容显示区域 -->
         <div :class="{ content_hidden: isShow }" v-html="article.content"></div>
-        <div class="bg-gradient">
+        <div class="bg-gradient" v-show="isShow">
           <p @click="isShowArticle">显示更多 <van-icon name="arrow-down" /></p>
         </div>
       </div>
@@ -66,19 +69,32 @@
       </div>
     </div>
     <!-- /文章详情 -->
+    <div class="error" v-if="is404">
+      <p>文章被外星人吃掉了</p>
+      <van-button @click="$router.back()">后退</van-button>
+      <van-button @click="$router.push('/')">回主页</van-button>
+    </div>
+    <!-- 评论 -->
+
+    <comment v-if="!is404"></comment>
   </div>
 </template>
 
 <script>
-import { getArticlesDetails } from '@/api/article.js'
+import { getArticlesDetails, setConcern, unConcern } from '@/api/article.js'
+import Comment from './comment.vue'
 export default {
   name: 'ArticleIndex',
   data () {
     return {
       loading: true, // 控制加载中的 loading 状态
       article: {},
-      isShow: true
+      isShow: true,
+      is404: false
     }
+  },
+  components: {
+    Comment
   },
   created () {
     this.getarticles()
@@ -87,16 +103,45 @@ export default {
     // 获取文章详情
     async getarticles () {
       try {
+        this.loading = true
         const res = await getArticlesDetails(this.$route.params.id)
         this.article = res.data.data
         console.log(res)
         this.loading = false
+        this.$toast('获取成功')
       } catch (err) {
-        console.log(err)
+        this.loading = false
+        if (err.response.status === 404) {
+          this.is404 = true
+        }
       }
     },
+    // 点击显示更多文章
     isShowArticle () {
       this.isShow = false
+    },
+    // 关注
+    async toggleConcern () {
+      // eslint-disable-next-line camelcase
+      const { is_followed: isFollowed, aut_id: autId } = this.article
+      try {
+        if (!isFollowed) {
+          const res = await setConcern(autId)
+          console.log(res)
+          this.$toast.success('加关成功')
+          // 修改页面的状态
+          this.article.is_followed = true
+        } else {
+          const res = await unConcern(autId)
+          console.log(res)
+          this.$toast.success('取关成功')
+          // 修改页面的状态
+          this.article.is_followed = false
+        }
+      } catch (err) {
+        console.log(err)
+        this.$toast.fail('不能关注自己')
+      }
     }
   }
 }

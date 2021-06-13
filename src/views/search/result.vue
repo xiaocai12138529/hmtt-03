@@ -17,7 +17,12 @@
       finished-text="没有更多了"
       @load="onLoad"
     >
-      <van-cell v-for="item in list" :key="item.art_id" :title="item.title" />
+      <van-cell
+        v-for="item in list"
+        :key="item.art_id"
+        :title="item.title"
+        @click="$router.push(`/article/` + item.art_id)"
+      />
     </van-list>
     <!-- /文章列表 -->
   </div>
@@ -40,6 +45,7 @@ export default {
     async onLoad () {
       try {
         const res = await getSearch(this.$route.query.keyword, this.page)
+        console.log(res)
         this.page++
         const arr = res.data.data.results
         this.list.push(...arr)

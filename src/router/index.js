@@ -36,9 +36,14 @@ const routes = [
     //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/result',
+    path: '/search/result',
     name: 'result',
     component: () => import('../views/search/result.vue')
+  },
+  {
+    path: '/article/:id', // 动态路由
+    name: 'article',
+    component: () => import('../views/article/article.vue')
   }
 
 ]

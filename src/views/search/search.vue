@@ -40,7 +40,7 @@
         :title="item"
         v-for="(item, index) in history"
         :key="index"
-        @click="$router.push('/result?keyword=' + item)"
+        @click="$router.push('/search/result?keyword=' + item)"
       >
         <van-icon @click.stop="delHistory(index)" name="close"></van-icon>
       </van-cell>
@@ -118,12 +118,12 @@ export default {
       if (this.keyword) {
         // 添加历史记录
         this.addHistory(this.keyword)
-        this.$router.push('/result?keyword=' + this.keyword)
+        this.$router.push('/search/result?keyword=' + this.keyword)
       }
     },
     // 情况二 点击搜索结果添加
     HClickSuggestion (inx) {
-      this.$router.push('/result?keyword=' + this.list[inx])
+      this.$router.push('/search/result?keyword=' + this.list[inx])
       this.addHistory(this.list[inx])
     },
     // 删除历史记录

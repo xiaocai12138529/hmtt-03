@@ -36,3 +36,12 @@ export const reports = (target, type) => {
     }
   })
 }
+
+// 获取文章详情
+// eslint-disable-next-line camelcase
+export const getArticlesDetails = (article) => {
+  return request({
+    url: 'v1_0/articles/' + `${article}`
+
+  })
+}

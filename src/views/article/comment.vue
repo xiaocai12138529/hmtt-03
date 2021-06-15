@@ -1,6 +1,8 @@
 <template>
-  <div class="article-comments">
+  <div class="article-comments" id="top">
     <!-- 评论列表 -->
+    <div id="chatContainer">1231231</div>
+
     <van-list
       v-model="loading"
       :finished="finished"
@@ -25,11 +27,16 @@
             }}</span>
           </p>
         </div>
-        <van-icon slot="right-icon" name="like-o" />
+        <van-icon
+          slot="right-icon"
+          :name="item.is_liking ? 'like' : 'like-o'"
+          @click="hToggleLike(item)"
+        />
       </van-cell>
     </van-list>
     <!-- 评论列表 -->
     <!-- 发布评论 -->
+
     <div :class="commentShow ? 'art-cmt-container-1' : 'art-cmt-container-2'">
       <!-- 底部添加评论区域 - 1 -->
       <div class="add-cmt-box van-hairline--top" v-show="commentShow">
@@ -52,7 +59,9 @@
           ref="txt"
           @blur="hBlur"
         ></textarea>
-        <van-button type="default" @click="hAddComment">发布</van-button>
+        <van-button type="default" @click="hAddComment"
+          ><a href="other.html#xxxx"> 发布</a></van-button
+        >
       </div>
     </div>
     <!-- /发布评论 -->
@@ -61,6 +70,7 @@
 
 <script>
 import { getComment } from '@/api/article.js'
+import { addComment, addCommentLike, deleteCommentLike } from '@/api/comment.js'
 export default {
   name: 'ArticleComment',
   data () {
@@ -74,13 +84,47 @@ export default {
       finished: false // 是否加载结束
     }
   },
-
   methods: {
+    // 用户喜欢/取消喜欢评论
+    async hToggleLike (item) {
+      try {
+        const isLike = item.is_liking
+        const commentId = item.com_id
+        if (!isLike) {
+          addCommentLike(commentId)
+          this.$toast.success('点赞成功')
+        } else {
+          deleteCommentLike(commentId)
+          this.$toast.success('取消点赞成功')
+        }
+        item.is_liking = !isLike
+      } catch (err) {
+        this.$toast.fail('操作失败')
+      }
+    },
     // 点击发布
-    hAddComment () {
-      this.$nextTick(() => {
-        alert('失去焦点')
-      })
+    async hAddComment () {
+      try {
+        const res = await addComment(this.$route.params.id, this.commentText)
+        const obj = res.data.data.new_obj
+        // eslint-disable-next-line no-undef
+        obj.is_liking = false
+        this.list.unshift(obj)
+        // this.$el.querySelector('#chatContainer').scrollIntoView({
+        //   behavior: 'smooth', // 平滑过渡
+        //   block: 'start' // 上边框与视窗顶部平齐。默认值
+        // })
+        // const rrr = this.$el.querySelector('.article-container')
+        console.dir(this.$el.offsetTop)
+        const hit = this.$el.offsetTop
+        this.$el.querySelector('#chatContainer').parentNode.parentNode.scroll({
+          top: hit - 100,
+          left: 0,
+          behavior: 'smooth'
+        })
+      } catch (err) {
+        console.log(err)
+      }
     },
     // 评论框失去焦点事件
     hBlur () {

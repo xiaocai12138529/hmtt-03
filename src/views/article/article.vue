@@ -1,5 +1,5 @@
 <template>
-  <div class="article-container">
+  <div class="article-container" id="xxx">
     <!-- 导航栏 -->
     <van-nav-bar
       fixed
@@ -12,7 +12,6 @@
     <!-- 加载中 loading -->
     <van-loading v-if="loading" class="article-loading" />
     <!-- /加载中 loading -->
-
     <!-- 文章详情 -->
     <div class="detail" v-if="!is404">
       <!-- 标题 -->
@@ -100,6 +99,7 @@ export default {
     this.getarticles()
   },
   methods: {
+
     // 获取文章详情
     async getarticles () {
       try {

@@ -3,24 +3,24 @@
     <!-- 用户个人资料 -->
     <div class="user-profile">
       <div class="info">
-        <van-image round src="https://img.yzcdn.cn/vant/cat.jpeg" />
+        <van-image round :src="userInfo.photo" />
         <h3 class="name">
-          用户名
+          {{ userInfo.name }}
           <br />
           <van-tag size="mini">申请认证</van-tag>
         </h3>
       </div>
       <van-row>
         <van-col span="8">
-          <p>0</p>
+          <p>{{ userInfo.art_count }}</p>
           <p>动态</p>
         </van-col>
         <van-col span="8">
-          <p>0</p>
+          <p>{{ userInfo.follow_count }}</p>
           <p>关注</p>
         </van-col>
         <van-col span="8">
-          <p>0</p>
+          <p>{{ userInfo.fans_count }}</p>
           <p>粉丝</p>
         </van-col>
       </van-row>
@@ -44,29 +44,63 @@
       to: 用来做路由的跳转
     -->
     <van-cell-group class="user-group">
-      <van-cell icon="edit" title="编辑资料" to="/user/profile" is-link />
+      <van-cell icon="edit" title="编辑资料" to="/setting/profile" is-link />
       <van-cell icon="chat-o" title="小智同学" to="/user/chat" is-link />
       <van-cell icon="setting-o" title="系统设置" />
-      <van-cell icon="warning-o" title="退出登录" to="/login" is-link />
+      <van-cell icon="warning-o" title="退出登录" is-link @click="userQuit" />
     </van-cell-group>
   </div>
 </template>
 
 <script>
+import { getUser, getFollowings } from '@/api/user.js'
 export default {
   name: 'UserIndex',
   data () {
     return {
-      userInfo: []
+      userInfo: this.$store.state.user,
+      followings: {}
     }
   },
+  created () {
+    this.getUser()
+    this.getFollowings()
+  },
   methods: {
-    getUserInfor () {
+    // 获取用户基本信息
+    async getUser () {
       try {
-
+        const res = await getUser()
+        this.userInfo = res.data.data
+        console.log(res)
       } catch (err) {
 
       }
+    },
+    // 获取用户粉丝关注的数量
+    async getFollowings () {
+      try {
+        const res = await getFollowings()
+        this.followings = res.data.data
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    userQuit () {
+      // vant确认弹出层
+      this.$dialog.confirm({
+        title: '退出账户',
+        message: '是否确认退出'
+      })
+        .then(() => {
+          // on confirm
+          this.$store.commit('setToken', {})
+          console.log(123)
+          this.$router.push('/login')
+        })
+        .catch(() => {
+          // on cancel
+        })
     }
   }
 }

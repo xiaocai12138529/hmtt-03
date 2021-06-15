@@ -21,10 +21,6 @@ const routes = [
     path: '/login',
     name: 'login',
     component: login
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
     path: '/search',
@@ -44,6 +40,11 @@ const routes = [
     path: '/article/:id', // 动态路由
     name: 'article',
     component: () => import('../views/article/article.vue')
+  },
+  {
+    path: '/setting/profile', // 动态路由
+    name: 'article',
+    component: () => import('../views/setting/profile.vue')
   }
 
 ]
@@ -51,5 +52,10 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router

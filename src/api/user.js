@@ -21,3 +21,40 @@ export const getPorfile = () => {
     method: 'GET'
   })
 }
+// 获取用户粉丝 关注
+export const getFollowings = () => {
+  return request({
+    url: '/v1_0/user/followings',
+    method: 'GET'
+  })
+}
+// 获取用户粉丝 关注
+export const getUser = () => {
+  return request({
+    url: '/v1_0/user/',
+    method: 'GET'
+  })
+}
+/**
+ * 编辑用户信息
+ * data: {
+ *  name,
+ *  gender,
+ *  birthday
+ * }
+ */
+export const updateUserInfo = (data) => {
+  return request({
+    method: 'PATCH',
+    url: 'v1_0/user/profile',
+    data
+  })
+}
+
+export const setPhoto = (files) => {
+  return request({
+    url: '/v1_0/user/photo',
+    method: 'PATCH',
+    data: files
+  })
+}

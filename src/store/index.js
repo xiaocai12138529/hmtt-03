@@ -13,6 +13,7 @@ export default new Vuex.Store({
   mutations: {
     setToken (state, newToken) {
       state.tokenInfor = newToken
+      saveToken(newToken)
     }
   },
   actions: {
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         throw new Error(err)
       }
     }
+
   },
   modules: {
     user

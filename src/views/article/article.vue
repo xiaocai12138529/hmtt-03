@@ -139,8 +139,9 @@ export default {
           this.article.is_followed = false
         }
       } catch (err) {
-        console.log(err)
-        this.$toast.fail('不能关注自己')
+        console.dir(err)
+        if (err.response.status === 400) { this.$toast.fail('不能关注自己') }
+        if (err.response.status === 401) { this.$toast.fail('请先登录') }
       }
     }
   }

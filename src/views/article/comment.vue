@@ -1,7 +1,7 @@
 <template>
   <div class="article-comments" id="top">
     <!-- 评论列表 -->
-    <div id="chatContainer">1231231</div>
+    <div id="chatContainer"></div>
 
     <van-list
       v-model="loading"
@@ -59,9 +59,7 @@
           ref="txt"
           @blur="hBlur"
         ></textarea>
-        <van-button type="default" @click="hAddComment"
-          ><a href="other.html#xxxx"> 发布</a></van-button
-        >
+        <van-button type="default" @click="hAddComment"> 发布</van-button>
       </div>
     </div>
     <!-- /发布评论 -->
@@ -114,14 +112,14 @@ export default {
         //   behavior: 'smooth', // 平滑过渡
         //   block: 'start' // 上边框与视窗顶部平齐。默认值
         // })
-        // const rrr = this.$el.querySelector('.article-container')
-        console.dir(this.$el.offsetTop)
         const hit = this.$el.offsetTop
         this.$el.querySelector('#chatContainer').parentNode.parentNode.scroll({
           top: hit - 100,
           left: 0,
           behavior: 'smooth'
         })
+        this.total_count = this.total_count + 1
+        this.commentText = ''
       } catch (err) {
         console.log(err)
       }

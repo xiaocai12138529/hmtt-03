@@ -47,7 +47,7 @@ export default {
     return {
       // 账户密码
       user: {
-        mobile: '13911111111', // 测试账号可以登录
+        mobile: '15510847465', // 测试账号可以登录
         code: '246810'
       },
       // 正则 我没用
@@ -79,13 +79,14 @@ export default {
         // 获取用户信息
         await this.getProfile()
         // 登录成功跳转
-        this.$router.push('/')
+        this.$router.push(this.$route.query.backto || '/')
         // 登录成功效果
         this.$toast.success('成功')
       } catch (err) {
         // 登录失败效果
-        this.$toast.fail('失败')
-        console.log('登录失败', err.message)
+        console.dir(err)
+        this.$toast.fail('验证码错误')
+        console.dir('登录失败', err)
       }
     }
   }

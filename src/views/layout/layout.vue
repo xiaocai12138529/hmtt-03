@@ -2,7 +2,13 @@
   <div class="container">
     <!-- 顶部导航 -->
     <div>
-      <van-nav-bar fixed title="标题" left-text="返回" left-arrow>
+      <van-nav-bar
+        v-if="$route.path !== '/setting'"
+        fixed
+        title="标题"
+        left-text="返回"
+        left-arrow
+      >
         <template #left>
           <div class="logo"><img src="" alt="" /></div>
         </template>

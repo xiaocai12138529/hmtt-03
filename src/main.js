@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import router from './router'
+// main引入auth auth引入router  链式导入
+import router from './router/auth'
 import store from './store'
 
 import Vant, { Lazyload } from 'vant' // 组件库

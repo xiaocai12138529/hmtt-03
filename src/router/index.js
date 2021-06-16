@@ -34,22 +34,22 @@ const routes = [
   {
     path: '/search/result',
     name: 'result',
-    component: () => import('../views/search/result.vue')
+    component: () => import(/* webpackChunkName: "result" */'../views/search/result.vue')
   },
   {
     path: '/article/:id', // 动态路由
     name: 'article',
-    component: () => import('../views/article/article.vue')
+    component: () => import(/* webpackChunkName: "article" */'../views/article/article.vue')
   },
   {
     path: '/setting/profile', // 动态路由
     name: 'article',
-    component: () => import('../views/setting/profile.vue')
+    component: () => import(/* webpackChunkName: "profile" */'../views/setting/profile.vue')
   },
   {
     path: '/chat', // 动态路由
     name: 'chat',
-    component: () => import('../views/setting/chat.vue')
+    component: () => import(/* webpackChunkName: "chat" */'../views/setting/chat.vue')
   }
 
 ]

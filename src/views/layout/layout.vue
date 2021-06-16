@@ -46,7 +46,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-
+  name: 'layout',
   computed: {
     ...mapGetters(['isLogin'])
   }

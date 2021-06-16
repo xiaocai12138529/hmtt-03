@@ -62,6 +62,9 @@ export default {
       followings: {}
     }
   },
+  activated () {
+    this.getUser()
+  },
   created () {
     this.getUser()
     this.getFollowings()

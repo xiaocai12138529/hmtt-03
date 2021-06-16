@@ -1,5 +1,5 @@
 <template>
-  <div class="scroll-wrapper">
+  <div class="scroll-wrapper" ref="scrolll" @scroll="hScroll">
     文章列表组件 {{ Math.random() }}
     <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
       <van-list
@@ -77,10 +77,17 @@ export default {
       refreshing: false,
       tiemstamp: Date.now(),
       isShowMroeArticle: false,
-      articleId: null
+      articleId: null,
+      scrollTop: 0
     }
   },
+  activated () {
+    this.$refs.scrolll.scrollTop = this.scrollTop
+  },
   methods: {
+    hScroll () {
+      this.scrollTop = this.$refs.scrolll.scrollTop
+    },
     async onLoad () {
       // const res = await getArticles(this.channel.id ? this.channel.id : 0, this.tiemstamp)
       const res = await getArticles(this.channel.id, this.tiemstamp)

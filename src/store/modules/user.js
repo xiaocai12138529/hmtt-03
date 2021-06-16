@@ -18,6 +18,12 @@ export default {
     },
     setUserPhoto (state, newPhtot) {
       state.userInfo.photo = newPhtot
+    },
+    setUserGender (state, newGender) {
+      state.userInfo.gender = Number(newGender)
+    },
+    setUserBirthday (state, newBirthday) {
+      state.userInfo.birthday = newBirthday
     }
 
   },
@@ -40,10 +46,18 @@ export default {
         if (!newName) {
           return
         } else {
-          const res = await updateUserInfo(newName)
-          console.log(123, res)
-          // 保存name
-          context.commit('setUserName', newName)
+          if (newName.name) {
+            await updateUserInfo(newName)
+            context.commit('setUserName', newName.name)
+          } else if (newName.gender) {
+            console.log('gender')
+            await updateUserInfo(newName)
+            context.commit('setUserGender', newName.gender)
+          } else if (newName.birthday) {
+            console.log('gender')
+            await updateUserInfo(newName)
+            context.commit('setUserBirthday', newName.birthday)
+          }
         }
       } catch (err) {
         console.log(err)

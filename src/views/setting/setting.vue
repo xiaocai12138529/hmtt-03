@@ -45,7 +45,7 @@
     -->
     <van-cell-group class="user-group">
       <van-cell icon="edit" title="编辑资料" to="/setting/profile" is-link />
-      <van-cell icon="chat-o" title="小智同学" to="/user/chat" is-link />
+      <van-cell icon="chat-o" title="小智同学" @click="toChat" is-link />
       <van-cell icon="setting-o" title="系统设置" />
       <van-cell icon="warning-o" title="退出登录" is-link @click="userQuit" />
     </van-cell-group>
@@ -101,6 +101,9 @@ export default {
         .catch(() => {
           // on cancel
         })
+    },
+    toChat () {
+      this.$router.push('/chat?userInfor=' + this.userInfo.photo)
     }
   }
 }

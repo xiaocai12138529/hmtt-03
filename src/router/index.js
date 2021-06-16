@@ -45,6 +45,11 @@ const routes = [
     path: '/setting/profile', // 动态路由
     name: 'article',
     component: () => import('../views/setting/profile.vue')
+  },
+  {
+    path: '/chat', // 动态路由
+    name: 'chat',
+    component: () => import('../views/setting/chat.vue')
   }
 
 ]
